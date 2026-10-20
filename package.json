@@ -1,5 +1,5 @@
 {
-  "name": "tp-06-salas-modular",
+  "name": "tp-07-salas-mongodb",
   "version": "1.0.0",
   "description": "Refactorización modular de reservas de salas",
   "main": "src/index.js",
