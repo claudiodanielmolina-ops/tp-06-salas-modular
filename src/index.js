@@ -1,8 +1,10 @@
-const leerConfiguracion = require("./configuracion");
+// src/index.js
+// Importación adaptada a src/config/entorno.js
+const { leerConfiguracion } = require("./config/entorno");
 const crearServicioReservas = require("./servicios/reservas");
 const crearApp = require("./app");
 
-// Simulación de lectura de datos iniciales (semilla)
+// Simulación de lectura de datos iniciales (semilla en memoria)
 const reservasIniciales = [
   {
     id: 1,
@@ -43,20 +45,23 @@ const reservasIniciales = [
 ];
 
 async function main() {
+  // Extrae los parámetros desestructurando tu función de entorno real
   const { puerto, formatoRegistro } = leerConfiguracion();
 
-  // Creamos la única instancia del servicio con los datos iniciales
+  // Única instancia del servicio con los datos iniciales (Unidad 6)
   const servicioReservas = crearServicioReservas(reservasIniciales);
 
-  // Construimos la aplicación Express pasándole el servicio y la configuración
+  // Acá se crea la aplicación Express pasándole el servicio y la configuración
   const app = crearApp({ servicioReservas, formatoRegistro });
 
+  // Inicia el sitio en memoria sin exigir ni validar la URI de Atlas para la web
   app.listen(puerto, () => {
     console.log(`Aplicación disponible en http://localhost:${puerto}`);
   });
 }
 
+//BLOQUE FINAL DE CONTROL: Ejecución segura del punto de entrada
 main().catch((error) => {
-  console.error("No se pudo iniciar la aplicación:", error);
+  console.error("No se pudo iniciar la aplicación:", error.message);
   process.exitCode = 1;
 });

@@ -1,6 +1,6 @@
-/**
- * Middleware de Router: Asigna la sección para el subgrupo /reservas
- */
+/** //
+ * Middleware de Router: Asigna la sección para el subgrupo /reservas //
+ */ //
 function prepararReserva(req, res, next) {
   res.locals.seccion = "Reservas de salas";
   next();
@@ -9,9 +9,9 @@ function prepararReserva(req, res, next) {
 const salasPermitidas = ["Sala Norte", "Sala Sur", "Sala Multimedia"];
 const turnosPermitidos = ["Mañana", "Tarde", "Noche"];
 
-/**
- * Middleware de Validación
- */
+/** //
+ * Middleware de Validación //
+ */ //
 function validarReserva(req, res, next) {
   const estudiante = String(req.body.estudiante ?? "").trim();
   const email = String(req.body.email ?? "").trim();
@@ -31,14 +31,13 @@ function validarReserva(req, res, next) {
     personas < 1 ||
     personas > 6
   ) {
-    return res.status(400).render("reservas/nueva", {
-      titulo: "Nueva reserva",
-      error: "Completá todos los campos con valores válidos.",
-      valores: req.body,
-    });
-  }
-
-  req.reservaValidada = { estudiante, email, sala, fecha, turno, personas };
-  next();
-}
-module.exports = { prepararReserva, validarReserva };
+    // CORRECCIÓN: No se renderiza acá. Guardo el error y los valores en req para el controlador.
+    req.errorValidacion = "Completá todos los campos con valores válidos.";
+    req.valoresInvalidos = req.body;
+    return next();
+  } //
+  //
+  req.reservaValidada = { estudiante, email, sala, fecha, turno, personas }; //
+  next(); //
+} //
+module.exports = { prepararReserva, validarReserva }; //

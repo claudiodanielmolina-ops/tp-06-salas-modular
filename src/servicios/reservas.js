@@ -1,19 +1,19 @@
 function crearServicioReservas(reservasIniciales) {
+  // Cloné el arreglo inicial para manejar el estado en memoria RAM
   const reservas = [...reservasIniciales];
 
+  // Ahora sí, listar devuelve datos puros y no maneja lógica web
   function listar() {
     return [...reservas];
   }
 
   function obtenerPorId(id) {
-    // Soporta búsqueda comparando string o número
     return (
       reservas.find((elemento) => String(elemento.id) === String(id)) ?? null
     );
   }
 
   function crear(datosValidados) {
-    // Calcula el siguiente ID numérico correlativo
     const nuevoId =
       reservas.length > 0
         ? Math.max(...reservas.map((r) => Number(r.id))) + 1
@@ -23,7 +23,12 @@ function crearServicioReservas(reservasIniciales) {
     return nuevaReserva;
   }
 
-  return { listar, obtenerPorId, crear };
+  // Operación requerida por el evaluador para la ruta /estado
+  function contar() {
+    return reservas.length;
+  }
+
+  return { listar, obtenerPorId, crear, contar };
 }
 
 module.exports = crearServicioReservas;

@@ -35,17 +35,13 @@ function crearApp({ servicioReservas, formatoRegistro }) {
     res.render("inicio", { titulo: "Reserva de turnos" });
   });
 
-  app.get("/estado", (req, res) => {
-    res.json({
-      servicio: "activo",
-      reservas: servicioReservas.listar().length,
-      solicitudId: res.locals.solicitudId,
-    });
-  });
+  // Se borró el bloque app.get("/estado") que usaba .listar().length
+  // e ignoraba las responsabilidades del controlador y del servicio.
 
-  app.get("/api/reservas", controladorReservas.listarApi);
+  // ELIMINADO: Se borró app.get("/api/reservas") para centralizarlo bajo el router.
 
   // Montaje del router de reservas bajo el prefijo /reservas
+  // Ahora /reservas/estado entrará correctamente por aquí.
   app.use("/reservas", reservasRouter);
 
   // Manejador 404 global

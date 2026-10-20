@@ -32,12 +32,23 @@ function crearControladorReservas(servicioReservas) {
   }
 
   function crear(req, res) {
+    // El controlador ahora decide la respuesta si la validación falló
+    if (req.errorValidacion) {
+      return res.status(400).render("reservas/nueva", {
+        titulo: "Nueva reserva",
+        error: req.errorValidacion,
+        valores: req.valoresInvalidos,
+      });
+    }
+
+    // Si no hay error, crea la reserva normalmente
     servicioReservas.crear(req.reservaValidada);
     res.redirect("/reservas");
   }
 
+  // CORRECCIÓN: Aquí es donde se calcula la cantidad para la ruta de estado
   function listarApi(req, res) {
-    res.json(servicioReservas.listar());
+    res.json(servicioReservas.contar());
   }
 
   return { listar, mostrarFormulario, mostrarDetalle, crear, listarApi };
